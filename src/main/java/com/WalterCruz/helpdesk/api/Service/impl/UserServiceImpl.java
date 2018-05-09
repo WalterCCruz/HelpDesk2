@@ -2,6 +2,8 @@ package com.WalterCruz.helpdesk.api.Service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.WalterCruz.helpdesk.api.Service.UserService;
@@ -34,14 +36,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
+		this.userRepository.delete(id);
 		
 	}
 
 	@Override
 	public Page<User> FindAll(int page, int count) {
-		// TODO Auto-generated method stub
-		return null;
+			
+		Pageable pages = new PageRequest(page, count);
+		return this.userRepository.findAll(pages);
 	}
 
 	
