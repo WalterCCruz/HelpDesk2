@@ -10,5 +10,5 @@ import com.WalterCruz.helpdesk.api.entity.ChangeStatus;
 public interface ChangeStatusRepository extends MongoRepository<ChangeStatus, String> {
 
 	Iterable<ChangeStatus>FindByTicketIdOrderByDateChangeStatusDesc(String ticketId);
-	
+
 }

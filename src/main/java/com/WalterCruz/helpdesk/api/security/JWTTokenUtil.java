@@ -1,11 +1,10 @@
 package com.WalterCruz.helpdesk.api.security;
 
+
 import java.io.Serializable;
+import org.springframework.beans.factory.annotation.Value;
 
-
-
-
-import org.springframework.beans.factory.annotation.Value; 
+import io.jsonwebtoken.Claims;
 
 
 public class JWTTokenUtil implements Serializable{
@@ -17,8 +16,6 @@ public class JWTTokenUtil implements Serializable{
 	static final String CLAIM_KEY_CREATED = "created";
 	static final String CLAIM_KEY_EXPIRED = "exp";
 	
-	
-	
 	@Value("${jwt.secret}")
 	private String secret;
 	
@@ -26,31 +23,14 @@ public class JWTTokenUtil implements Serializable{
 	private Long expiration;
 	
 	public String getUsernameFromToken(String token) {
-		String username;
+		String username = "";
 		try {
-			final Claims claims = null;
+		final Claims claims = null;
+			username = claims.getSubject();
+		}catch (Exception e) {
+			username = null;
 		}
-		
-		
-		
-		
+		return username;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	}
-	
 		
-
-
-	
-
-	
-
+}
