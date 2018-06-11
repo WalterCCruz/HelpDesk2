@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.WalterCruz.helpdesk.api.entity.User;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	
