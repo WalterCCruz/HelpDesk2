@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.WalterCruz.helpdesk.api.enums.StatusEnum;
+
 @Document
 public class ChangeStatus {
 	
@@ -20,7 +22,7 @@ public class ChangeStatus {
 	
 	private Date dateChangeStatus;
 
-	
+	private StatusEnum status;
 	
 	
 	public String getId() {
@@ -53,6 +55,14 @@ public class ChangeStatus {
 
 	public void setDateChangeStatus(Date dateChangeStatus) {
 		this.dateChangeStatus = dateChangeStatus;
+	}
+
+	public StatusEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusEnum status) {
+		this.status = status;
 	}
 	
 	

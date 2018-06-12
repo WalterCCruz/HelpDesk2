@@ -37,8 +37,16 @@ public class Ticket {
 	
 	private String image;
 	
-	@Transient
+	
 	private List <ChangeStatus> changes;
+
+	public List<ChangeStatus> getChanges() {
+		return changes;
+	}
+
+	public void setChanges(List<ChangeStatus> changes) {
+		this.changes = changes;
+	}
 
 	public String getId() {
 		return id;
@@ -120,12 +128,6 @@ public class Ticket {
 		this.image = image;
 	}
 
-	public List<ChangeStatus> getChanges() {
-		return changes;
-	}
-
-	public void setChanges(List<ChangeStatus> changes) {
-		this.changes = changes;
-	}
+	
 	
 }
