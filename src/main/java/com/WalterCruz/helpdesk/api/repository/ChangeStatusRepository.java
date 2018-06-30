@@ -9,6 +9,6 @@ import com.WalterCruz.helpdesk.api.entity.ChangeStatus;
 //Minha entidade, Meu tipo de Id(no caso String)
 public interface ChangeStatusRepository extends MongoRepository<ChangeStatus, String> {
 
-	//Iterable<ChangeStatus>FindByTicketIdOrderByDateChangeStatusDesc(String ticketId);
+	Iterable<ChangeStatus>FindByTicketIdOrderByDateChangeStatusDesc(String ticketId);
 
 }
