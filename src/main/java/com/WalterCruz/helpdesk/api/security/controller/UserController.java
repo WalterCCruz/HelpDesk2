@@ -3,8 +3,12 @@ package com.WalterCruz.helpdesk.api.security.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-
 import com.WalterCruz.helpdesk.api.Service.UserService;
 import com.WalterCruz.helpdesk.api.entity.User;
 import com.WalterCruz.helpdesk.api.response.Response;
@@ -26,7 +29,7 @@ import com.mongodb.DuplicateKeyException;
 public class UserController {
 
 	@Autowired
-	private UserService userservice;
+	private UserService userService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -43,7 +46,7 @@ public class UserController {
 				return ResponseEntity.badRequest().body(response);
 			}
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			User userPersisted = (User) userservice.createOrUpdate(user);
+			User userPersisted = (User) userService.createOrUpdate(user);
 			response.setData(userPersisted);
 			
 		}catch (DuplicateKeyException dE) {
@@ -68,6 +71,20 @@ public class UserController {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<User>> update(HttpServletRequest request, @RequestBody User user, BindingResult result){
 		Response<User> response = new Response <User>();
+		try {
+			validateUpdateUser(user, result);
+			if(result.hasErrors()) {
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			}
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			User userPersisted = (User) userService.createOrUpdate(user);
+			response.setData(userPersisted);
+		}catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+			
+		}
 		return ResponseEntity.ok(response);
 		
 	}
@@ -81,6 +98,48 @@ public class UserController {
 			result.addError(new ObjectError("User", "Email no Information"));
 		}
 	}
+	
+	@GetMapping(value = "{id}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Response<User>>FindById(@PathVariable("id")String  id){
+		Response<User> response = new Response <User>();
+		User user = userService.findById(id);
+		if (user == null) {
+			response.getErrors().add("Register not found id : "+id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		response.setData(user);
+		return ResponseEntity.ok(response);
+	}
+	
+
+	@DeleteMapping(value = "{id}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Response<String>>delete(@PathVariable("id")String  id){
+		Response<String> response = new Response <String>();
+		User user = userService.findById(id);
+		if (user == null) {
+			response.getErrors().add("Register not found id : "+id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		userService.delete(id);
+		return ResponseEntity.ok(new Response<String>());
+	}
+	
+	
+	@GetMapping(value  = "{page}/{count}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Response<Page<User>>> findAll (@PathVariable int page, @PathVariable int count){
+		Response<Page<User>> response = new Response <Page<User>>();
+		Page<User> users = userService.FindAll(page, count);
+		response.setData(users);
+		return ResponseEntity.ok(response);
+
+	}
+	
+	
+	
+	
 	
 }
 
