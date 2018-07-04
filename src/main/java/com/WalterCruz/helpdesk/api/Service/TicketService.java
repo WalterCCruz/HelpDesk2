@@ -32,7 +32,7 @@ public interface TicketService {
 	
 	Iterable <Ticket> findAll();
 	
-	Page<Ticket> findByParameterAndAssignedUser(int page, int count, String title, String status, String priority);
+	Page<Ticket> findByParameterAndAssignedUser(int page, int count, String title, String status, String priority,String UserId);
 	
 	
 	
