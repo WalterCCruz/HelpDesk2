@@ -1,5 +1,4 @@
 package com.WalterCruz.helpdesk.api.repository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import com.WalterCruz.helpdesk.api.entity.Ticket;
@@ -16,7 +15,7 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
 			String status, String priority, Pageable pages);
 
 	Page<Ticket> findByTitleIgnoreCaseContainingAndStatusAndPriorityAndAssignedUserIdOrderByDateDesc(String title,
-			String status, String priority, int page);
+			String status, String priority, Pageable pages);
 
 	Page<Ticket> findByNumber(Integer number, Pageable pages);
 

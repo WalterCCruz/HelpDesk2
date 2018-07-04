@@ -1,13 +1,8 @@
 package com.WalterCruz.helpdesk.api.Service.impl;
-
-import java.awt.print.Pageable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-
 import com.WalterCruz.helpdesk.api.Service.TicketService;
 import com.WalterCruz.helpdesk.api.entity.ChangeStatus;
 import com.WalterCruz.helpdesk.api.entity.Ticket;
@@ -57,7 +52,7 @@ public class TicketServiceImpl implements TicketService{
 
 	@Override
 	public Iterable<ChangeStatus> ListChangeStatus(String TicketId) {
-		return this.changestatusRepository.FindByTicketIdOrderByDateChangeStatusDesc(TicketId);
+		return this.changestatusRepository.findByTicketIdOrderByDateChangeStatusDesc(TicketId);
 	}
 
 	@Override
@@ -94,10 +89,12 @@ public class TicketServiceImpl implements TicketService{
 	}
 
 	@Override
-	public Page<Ticket> findByPsrameterAndAssignedUser(int page, String title, String status, String priority) {
-	
-		return this.ticketRepository.findByTitleIgnoreCaseContainingAndStatusAndPriorityAndAssignedUserIdOrderByDateDesc(title, status, priority, page);
+	public Page<Ticket> findByParameterAndAssignedUser(int page, int count, String title, String status,String priority) {
+			org.springframework.data.domain.Pageable pages = new PageRequest(page,count);
+			return this.ticketRepository.findByTitleIgnoreCaseContainingAndStatusAndPriorityAndAssignedUserIdOrderByDateDesc(title, status, priority, pages);	
 	}
+
+
 
 	
 	
